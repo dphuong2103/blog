@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic";
 import { PostItem } from "@/components/post-item";
 import { getBlogsPagination } from "@/api/blog";
+
 async function getBlogs() {
   return getBlogsPagination({ page: "1" });
 }
@@ -14,7 +15,7 @@ export default async function Home() {
           Latest Posts
         </h2>
         <ul className="flex flex-col">
-          {blogs.map((blog) => (
+          {(blogs ?? []).map((blog) => (
             <li key={blog.slug} className="first:border-t first:border-border">
               <PostItem
                 slug={blog.slug}

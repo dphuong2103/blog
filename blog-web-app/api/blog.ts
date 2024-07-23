@@ -44,7 +44,7 @@ export async function getBlogsPagination(
   const url = `${blog_api_url}${hasParams ? "?" : ""}${searchParams.toString()}`;
   const fetchedRes = await fetch(url);
   const data = (await fetchedRes.json()) as PaginationResult<Blog>;
-  return data;
+  return data ?? [];
 }
 
 export async function getPostBySlug(slug: string) {
