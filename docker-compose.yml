@@ -14,7 +14,7 @@ services:
       SPRING_APPLICATION_NAME: blog-be
       SERVER_PORT: 8081
       SPRING_DATASOURCE_URL: jdbc:mysql://movie-db:3306/blog?serverTimezone=UTC&useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
-      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: SuperSecretPassword@1234
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
       SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.MySQL8Dialect
