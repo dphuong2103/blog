@@ -1,0 +1,27 @@
+
+@import url('@radix-ui/colors/tomato-dark.css');
+@import url('@radix-ui/colors/mauve-dark.css');
+
+.list-special>ul {
+    list-style: initial;
+    margin-left: 10px;
+}
+
+.list-special>ol {
+    list-style: decimal;
+    margin-left: 10px;
+}
+
+.list-special>ul>li[role="checkbox"] {
+    display: flex !important;
+    align-items: center;
+    justify-self: center;
+}
+
+div[role="toolbar"] {
+    flex-wrap: wrap;
+}
+
+.list-special>h1 {
+    font-size: initial;
+}

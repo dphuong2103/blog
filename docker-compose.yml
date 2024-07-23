@@ -1,0 +1,63 @@
+version: '3.3'
+networks:
+    movienetwork:
+      external: true
+
+services:
+  blog-be:
+    image: blog-be
+    container_name: blog-be
+    build:
+      dockerfile: Dockerfile
+      context: ./blog-be
+    environment:
+      SPRING_APPLICATION_NAME: blog-be
+      SERVER_PORT: 8081
+      SPRING_DATASOURCE_URL: jdbc:mysql://movie-db:3306/blog?serverTimezone=UTC&useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: SuperSecretPassword@1234
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.MySQL8Dialect
+      APPLICATION_SECURITY_JWT_SECRET_KEY: ECPCVSx5bhnlEWVnESptXEyOPI9KeGUUECPCVSx5bhnlEWVnESptXEyOPI9KeGUU
+    ports:
+      - "8081:8081"
+    depends_on:
+      - movie-db
+    networks:
+      - movienetwork
+
+  blog-web-app:
+    image: blog-web-app
+    container_name: movie-web-app
+    build:
+      context: ./movie-web-app
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - movie-be
+    networks:
+      - movienetwork
+
+  nginx-web:
+    container_name: web
+    image: nginx
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/xxvid_online.crt:/usr/local/ssl/certificate/xxvid_online.crt
+      - ./nginx/xxvid.online.key:/usr/local/ssl/certificate/xxvid.online.key
+    ports:
+      - "80:80"
+      - "443:443"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+    depends_on:
+      - movie-web-app
+    networks:
+      - movienetwork
+
+volumes:
+  movie-data:
