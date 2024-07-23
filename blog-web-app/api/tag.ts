@@ -1,4 +1,4 @@
-import { tag_api_url } from "@/app/api/tag/route";
+import { tag_api_url } from "@/constants/api";
 import { Tag, TagWithBlogCount } from "@/models/type";
 
 export async function getAllTags() {
