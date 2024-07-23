@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import React from "react";
 import BlogEditorFormDetails from "./blog-editor-form-details";
 import { getAllTags } from "@/api/tag";

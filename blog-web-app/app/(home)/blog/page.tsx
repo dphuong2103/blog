@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { getBlogsPagination } from "@/api/blog";
 import { getAllTags } from "@/api/tag";
 import { PostItem } from "@/components/post-item";
@@ -8,8 +9,7 @@ import { sortShownTagsByCount } from "@/utils/sort-tags";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "My blog",
-  description: "This is a description",
+  title: "Blogs",
 };
 
 interface BlogPageProps {
