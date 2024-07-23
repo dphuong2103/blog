@@ -1,6 +1,6 @@
 version: '3.3'
 networks:
-    movienetwork:
+    movie_movienetwork:
       external: true
 
 services:
@@ -22,7 +22,7 @@ services:
     ports:
       - "8081:8081"
     networks:
-      - movienetwork
+      - movie_movienetwork
 
   blog-web-app:
     image: blog-web-app
@@ -35,7 +35,7 @@ services:
     depends_on:
       - blog-be
     networks:
-      - movienetwork
+      - movie_movienetwork
 
 volumes:
   movie-data:
