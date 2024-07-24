@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import cookie from "cookie";
-const api_url = "http://localhost:8081/api/v1";
+import { api_url } from "@/constants/api";
 
 export async function GET(req: NextRequest) {
   return handleRequest(req);
