@@ -10,12 +10,12 @@ export function formatDate(input: string | number): string {
     throw new Error("Invalid input type");
   }
 
-  return date.toLocaleDateString("vi-VN", {
+  return date.toLocaleDateString("en-EN", {
     month: "long",
     day: "numeric",
     year: "numeric",
     timeZone: "Asia/Ho_Chi_Minh",
-  }) + ' ' + date.toLocaleTimeString("vi-VN", {
+  }) + ' ' + date.toLocaleTimeString("en-EN", {
     hour: '2-digit',
     minute: '2-digit',
     hour12: false,
