@@ -1,11 +1,24 @@
 export function formatDate(input: string | number): string {
-  const date = new Date(input);
+  let date: Date;
+
   if (typeof input === "number") {
-    date.setUTCSeconds(input);
+    date = new Date(input * 1000);
+  } else if (typeof input === "string") {
+    input = input.split(" ").join("T") + "Z";
+    date = new Date(input);
+  } else {
+    throw new Error("Invalid input type");
   }
-  return date.toLocaleDateString("en-US", {
+
+  return date.toLocaleDateString("vi-VN", {
     month: "long",
     day: "numeric",
     year: "numeric",
+    timeZone: "Asia/Ho_Chi_Minh",
+  }) + ' ' + date.toLocaleTimeString("vi-VN", {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+    timeZone: "Asia/Ho_Chi_Minh",
   });
 }
