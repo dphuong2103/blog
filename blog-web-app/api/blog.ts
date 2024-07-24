@@ -42,7 +42,7 @@ export async function getBlogsPagination(
   const searchParams = new URLSearchParams({ ...filterdObject });
   const hasParams = !!searchParams.toString();
   const url = `${blog_api_url}${hasParams ? "?" : ""}${searchParams.toString()}`;
-  const fetchedRes = await fetch(url, { cache: 'no-store' });
+  const fetchedRes = await fetch(url, { cache: "no-store" });
   const data = (await fetchedRes.json()) as PaginationResult<Blog>;
   return data ?? [];
 }
