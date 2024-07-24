@@ -91,10 +91,10 @@ function BlogEditorFormDetails({ tags }: BlogEditorFormDetailsProps) {
         value: "true",
         label: "Publish",
       },
-      {
-        value: "false",
-        label: "Save as draft",
-      },
+      // {
+      //   value: "false",
+      //   label: "Save as draft",
+      // },
     ];
   }, []);
   const formId = "creat-blog-form";
