@@ -18,7 +18,7 @@ export default async function TagsPage() {
       </div>
       <hr className="my-4" />
       <div className="flex flex-wrap gap-2">
-        {tags?.map((item) => (
+        {(tags ?? []).map((item) => (
           <Tag tag={item.tag} count={item.count} key={item.count} />
         ))}
       </div>
