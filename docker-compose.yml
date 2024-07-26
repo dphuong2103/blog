@@ -26,9 +26,7 @@ services:
     networks:
       - blog-network
       - db-network
-    depends_on:
-      - blog-db
-
+      
   blog-web-app:
     image: blog-web-app
     container_name: blog-web-app
