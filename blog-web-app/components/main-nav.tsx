@@ -24,10 +24,19 @@ export function MainNav() {
         Blog
       </Link>
       <Link
+        href="/tag"
+        className={cn(
+          "text-sm font-medium transition-colors hover:text-primary hidden sm:inline-block",
+          pathname === "/tag" ? "text-foreground" : "text-foreground/60",
+        )}
+      >
+        Tag
+      </Link>
+      <Link
         href="/about"
         className={cn(
           "text-sm font-medium transition-colors hover:text-primary hidden sm:inline-block",
-          pathname === "/blog" ? "text-foreground" : "text-foreground/60",
+          pathname === "/about" ? "text-foreground" : "text-foreground/60",
         )}
       >
         About
