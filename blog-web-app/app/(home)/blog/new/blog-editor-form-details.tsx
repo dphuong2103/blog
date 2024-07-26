@@ -36,7 +36,7 @@ function BlogEditorFormDetails({ tags }: BlogEditorFormDetailsProps) {
     resolver: zodResolver(createBlogFormSchema),
     defaultValues: {
       content: "",
-      isPublished: "false",
+      isPublished: "true",
       summary: "",
       tags: [],
       title: "",

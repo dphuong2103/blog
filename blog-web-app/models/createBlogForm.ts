@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { BoolString, nonEmptyString } from "./z-custom";
+import { nonEmptyString } from "./z-custom";
 
 export const createBlogFormSchema = z.object({
   title: nonEmptyString,

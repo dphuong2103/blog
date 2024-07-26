@@ -46,7 +46,7 @@ import {
 import "./style.css";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
-
+import "./blog-editor.scss";
 const PlainTextCodeEditorDescriptor: CodeBlockEditorDescriptor = {
   match: () => true,
   priority: 0,
@@ -104,7 +104,9 @@ function BlogEditor<
         <FormItem>
           <FormControl>
             <MDXEditor
-              className={cn("w-full mt-2 min-h-96")}
+              className={cn("w-full mt-2 min-h-96 prose editor", {
+                "dark-editor": theme === "dark"
+              })}
               contentEditableClassName="min-h-80 list-special !text-secondary-foreground"
               onChange={field.onChange}
               markdown={field.value}
@@ -165,6 +167,7 @@ function BlogEditor<
                   ),
                 }),
               ]}
+              
             />
           </FormControl>
           <FormMessage />
