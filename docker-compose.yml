@@ -1,23 +1,11 @@
 version: '3.3'
 networks:
+  nginx-network:
+    external: true
+  db-network:
+    external: true
   blog-network:
-
 services:
-  blog-db:
-    image: mysql:8.0
-    container_name: blog-db
-    environment:
-      MYSQL_ROOT_PASSWORD: SuperSecretPassword@1234
-      MYSQL_DATABASE: blog
-      MYSQL_USER: user
-      MYSQL_PASSWORD: SuperSecretPassword@1234
-    ports:
-      - "3309:3306"
-    volumes:
-      - blog-data:/var/lib/mysql
-    networks:
-      - blog-network
-
   blog-be:
     image: blog-be
     container_name: blog-be
@@ -27,7 +15,7 @@ services:
     environment:
       SPRING_APPLICATION_NAME: blog-be
       SERVER_PORT: 8080
-      SPRING_DATASOURCE_URL: jdbc:mysql://blog-db:3306/blog?serverTimezone=UTC&useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/blog?serverTimezone=UTC&useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: SuperSecretPassword@1234
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
@@ -37,6 +25,7 @@ services:
       - "8081:8080"
     networks:
       - blog-network
+      - db-network
     depends_on:
       - blog-db
 
@@ -52,6 +41,4 @@ services:
       - blog-be
     networks:
       - blog-network
-
-volumes:
-  blog-data:
+      - nginx-network
