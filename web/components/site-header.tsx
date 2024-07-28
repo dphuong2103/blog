@@ -8,13 +8,13 @@ import SiteHeaderSearch from "./site-header-search";
 import SiteHeaderAvatar from "./site-header-avatar";
 import { User } from "@/models/type";
 import { Pencil } from "lucide-react";
-import { cookies } from 'next/headers';
+import { cookies } from "next/headers";
 import { getUserFromJwt } from "@/utils/authenticate";
 
 export async function SiteHeader() {
   let user: User | null = null;
-  const cookieStore = cookies()
-  const authorization = cookieStore.get('Authorization');
+  const cookieStore = cookies();
+  const authorization = cookieStore.get("Authorization");
   console.log("Authorization: ", authorization);
   if (authorization) {
     user = await getUserFromJwt(authorization.value);

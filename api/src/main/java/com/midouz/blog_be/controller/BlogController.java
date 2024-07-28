@@ -1,19 +1,14 @@
 package com.midouz.blog_be.controller;
 
-import com.midouz.blog_be.constant.TestData;
+import com.midouz.blog_be.entity.User;
 import com.midouz.blog_be.model.dto.BlogDTO;
 import com.midouz.blog_be.model.dto.PaginationResult;
-import com.midouz.blog_be.model.dto.Result;
 import com.midouz.blog_be.model.exception.BlogNotFoundException;
 import com.midouz.blog_be.model.request.CreateBlogRequest;
 import com.midouz.blog_be.service.BlogService;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,8 +27,8 @@ public class BlogController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BlogDTO createBlog(@RequestBody CreateBlogRequest request,  @AuthenticationPrincipal UserDetails userDetails) {
-        String userId = userDetails.getUsername();
+    public BlogDTO createBlog(@RequestBody CreateBlogRequest request, @AuthenticationPrincipal User userDetails) {
+        String userId = userDetails.getId();
         return blogService.createBlog(userId, request);
     }
 

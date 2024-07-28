@@ -3,7 +3,9 @@ package com.midouz.blog_be.service;
 import com.midouz.blog_be.entity.Blog;
 import com.midouz.blog_be.entity.Tag;
 import com.midouz.blog_be.entity.User;
-import com.midouz.blog_be.model.dto.*;
+import com.midouz.blog_be.model.dto.BlogDTO;
+import com.midouz.blog_be.model.dto.PageInfo;
+import com.midouz.blog_be.model.dto.PaginationResult;
 import com.midouz.blog_be.model.exception.BlogNotFoundException;
 import com.midouz.blog_be.model.exception.TagNotFoundException;
 import com.midouz.blog_be.model.exception.UserNotFoundException;
@@ -22,7 +24,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,21 +36,23 @@ public class BlogService {
     private final TagRepository tagRepository;
     private final VNCharacterService vnCharacterService;
     private final SlugService slugService;
+
     public List<BlogDTO> getBlogsByUserId(String userId) {
         List<Blog> blogDTOList = blogRepository.getBlogsByUserId(userId);
         return blogDTOList.stream().map(BlogDTO::fromBlog).toList();
     }
-    public BlogDTO createBlog(String userId, CreateBlogRequest request){
+
+    public BlogDTO createBlog(String userId, CreateBlogRequest request) {
         String slugEn = vnCharacterService.removeAccent(request.getTitle());
         slugEn = slugService.replaceSpecialChar(slugEn);
         String slug = generateUniqueSlug(slugEn);
         Blog blog = request.toBlog(slug);
         blog.setSlug(slug);
         Optional<User> optionalUser = userRepository.findById(userId);
-        if(optionalUser.isEmpty()){
+        if (optionalUser.isEmpty()) {
             throw new UserNotFoundException(userId);
         }
-        if(!CollectionUtils.isEmpty(request.getTags())){
+        if (!CollectionUtils.isEmpty(request.getTags())) {
             blog.setTags(tagRepository.findAllById(request.getTags()));
         }
         blog.setAuthor(optionalUser.get());
@@ -55,24 +61,15 @@ public class BlogService {
     }
 
     public BlogDTO getBlogBySlug(String slug) throws BlogNotFoundException {
-        return blogRepository.findBySlug(slug)
-                .map(BlogDTO::fromBlog)
-                .orElseThrow(() -> new BlogNotFoundException(BlogNotFoundException.FindBlogType.slug,slug));
+        return blogRepository.findBySlug(slug).map(BlogDTO::fromBlog).orElseThrow(() -> new BlogNotFoundException(BlogNotFoundException.FindBlogType.slug, slug));
     }
 
     public PaginationResult<BlogDTO> getBlogs(int page, int size, String tagSlug, String q) {
         Pageable pageable = PageRequest.of(page - 1, size, Sort.by("createdAt").descending());
         q = q.replace('-', ' ');
-        Specification<Blog> specification = createSpecification(tagSlug,q);
+        Specification<Blog> specification = createSpecification(tagSlug, q);
         Page<Blog> blogPage = blogRepository.findAll(specification, pageable);
-        return PaginationResult.<BlogDTO>builder()
-                .pageInfo(PageInfo.builder()
-                        .next(blogPage.hasNext() ? page + 1 : -1)
-                        .totalCount((int) blogPage.getTotalElements())
-                        .size(size)
-                        .build())
-                .data(blogPage.stream().map(BlogDTO::fromBlog).toList())
-                .build();
+        return PaginationResult.<BlogDTO>builder().pageInfo(PageInfo.builder().next(blogPage.hasNext() ? page + 1 : -1).totalCount((int) blogPage.getTotalElements()).size(size).build()).data(blogPage.stream().map(BlogDTO::fromBlog).toList()).build();
     }
 
     private Specification<Blog> createSpecification(String tagSlug, String q) {
@@ -85,11 +82,8 @@ public class BlogService {
                 }
                 predicates.add(criteriaBuilder.isMember(optionalTag.get(), root.get("tags")));
             }
-            if(StringUtils.hasText(q)){
-                predicates.add(criteriaBuilder.or(
-                        criteriaBuilder.like(root.get("title"),"%"+q+"%"),
-                        criteriaBuilder.like(root.get("content"),"%"+q+"%")
-                ));
+            if (StringUtils.hasText(q)) {
+                predicates.add(criteriaBuilder.or(criteriaBuilder.like(root.get("title"), "%" + q + "%"), criteriaBuilder.like(root.get("content"), "%" + q + "%")));
             }
             return criteriaBuilder.and(predicates.toArray(Predicate[]::new));
         };

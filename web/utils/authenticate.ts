@@ -14,13 +14,12 @@ export async function logout() {
   cookies().set("Authorization", "", { expires: new Date(0) });
 }
 
-
 export async function getUserFromJwt(authorizationString: string) {
   const url = `${user_api_url}/info`;
   const response = await fetch(url, {
     headers: {
-      Authorization: authorizationString
-    }
+      Authorization: authorizationString,
+    },
   });
   console.log("Resposne: ", response);
   if (!response.ok) {

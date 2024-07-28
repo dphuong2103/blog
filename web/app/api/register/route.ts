@@ -22,11 +22,15 @@ export async function POST(req: Request) {
       status: registerResponse.status,
     });
   }
-  const authenticationResponse = (await registerResponse.json()) as AuthenticationResponse;
+  const authenticationResponse =
+    (await registerResponse.json()) as AuthenticationResponse;
   const jwt = authenticationResponse.jwt;
-  const response = NextResponse.json(JSON.stringify(authenticationResponse.user), {
-    status: 200,
-  });
+  const response = NextResponse.json(
+    JSON.stringify(authenticationResponse.user),
+    {
+      status: 200,
+    },
+  );
   const jwtValue = `Bearer ${jwt}`;
   response.cookies.set({
     name: "Authorization",

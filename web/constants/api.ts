@@ -1,6 +1,6 @@
 export const env = process.env.NODE_ENV;
 // export const api_url = !(env === "production") ? process.env.API_URL_DEV : process.env.API_URL_PROD;
-if(env === "production" ){
+if (env === "production") {
   console.log("env: ", process.env);
 }
 export const api_url = !(env === "production")

@@ -105,7 +105,8 @@ function BlogEditor<
           <FormControl>
             <MDXEditor
               className={cn("w-full mt-2 min-h-96 prose editor", {
-                "dark-editor": theme === "dark"
+                "dark-editor": theme === "dark",
+                "dark-theme": theme === "dark",
               })}
               contentEditableClassName="min-h-80 list-special !text-secondary-foreground"
               onChange={field.onChange}
@@ -167,7 +168,6 @@ function BlogEditor<
                   ),
                 }),
               ]}
-              
             />
           </FormControl>
           <FormMessage />

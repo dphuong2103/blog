@@ -4,7 +4,10 @@ import { nonEmptyString } from "./z-custom";
 export const registerFormSchema = z
   .object({
     email: nonEmptyString.email("Please input valid email!"),
-    password: nonEmptyString,
+    password: nonEmptyString.min(
+      6,
+      "Password must be at least 6 characters long.",
+    ),
     confirmPassword: nonEmptyString,
     firstName: nonEmptyString,
     lastName: z.string(),

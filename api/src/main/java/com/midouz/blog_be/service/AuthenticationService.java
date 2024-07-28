@@ -23,8 +23,9 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-    public AuthenticationResponseDTO register(CreateUserRequest request){
-        if(isEmailExist(request.getEmail())){
+
+    public AuthenticationResponseDTO register(CreateUserRequest request) {
+        if (isEmailExist(request.getEmail())) {
             throw new DuplicateEmailException(request.getEmail());
         }
         String encodedPassword = passwordEncoder.encode(request.getPassword());
@@ -34,7 +35,7 @@ public class AuthenticationService {
         return new AuthenticationResponseDTO(token, UserDTO.fromUser(user));
     }
 
-    public AuthenticationResponseDTO login(LoginRequest request){
+    public AuthenticationResponseDTO login(LoginRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
@@ -42,7 +43,7 @@ public class AuthenticationService {
                 )
         );
         Optional<User> optionalUser = userRepository.findByEmail(request.getEmail());
-        if(optionalUser.isEmpty()){
+        if (optionalUser.isEmpty()) {
             throw new UserNotFoundException(request.getEmail());
         }
         User user = optionalUser.get();
@@ -50,7 +51,7 @@ public class AuthenticationService {
         return new AuthenticationResponseDTO(token, UserDTO.fromUser(user));
     }
 
-    private boolean isEmailExist(String email){
+    private boolean isEmailExist(String email) {
         return userRepository.existsByEmail(email);
     }
 }

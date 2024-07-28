@@ -19,6 +19,7 @@ export async function DELETE(req: NextRequest) {
 }
 
 async function handleRequest(req: NextRequest) {
+  console.log("Req: ", req);
   const url = new URL(req.url);
   const path = url.searchParams.get("path");
   if (!path) {
