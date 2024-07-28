@@ -6,7 +6,7 @@ networks:
     external: true
   blog-network:
 services:
-  blog-be:
+  api:
     image: blog-be
     container_name: blog-be
     build:
@@ -27,7 +27,7 @@ services:
       - blog-network
       - db-network
       
-  blog-web-app:
+  web:
     image: blog-web-app
     container_name: blog-web
     build:
