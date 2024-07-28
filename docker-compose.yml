@@ -11,7 +11,7 @@ services:
     container_name: blog-be
     build:
       dockerfile: Dockerfile
-      context: ./blog-be
+      context: ./api
     environment:
       SPRING_APPLICATION_NAME: blog-be
       SERVER_PORT: 8080
@@ -29,9 +29,9 @@ services:
       
   blog-web-app:
     image: blog-web-app
-    container_name: blog-web-app
+    container_name: blog-web
     build:
-      context: ./blog-web-app
+      context: ./web
       dockerfile: Dockerfile
     ports:
       - "3002:3000"
