@@ -3,7 +3,7 @@ import type {
   SandpackConfig,
 } from "@mdxeditor/editor";
 import "@mdxeditor/editor/style.css";
-import React, { useCallback, useContext, useEffect } from "react";
+import React, { useCallback } from "react";
 import {
   headingsPlugin,
   listsPlugin,

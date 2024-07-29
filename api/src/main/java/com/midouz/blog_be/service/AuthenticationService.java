@@ -31,8 +31,9 @@ public class AuthenticationService {
         String encodedPassword = passwordEncoder.encode(request.getPassword());
         User user = request.toUser(encodedPassword);
         userRepository.save(user);
-        String token = jwtService.generateToken(user);
-        return new AuthenticationResponseDTO(token, UserDTO.fromUser(user));
+        String jwt = jwtService.generateToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
+        return new AuthenticationResponseDTO(jwt, UserDTO.fromUser(user),refreshToken);
     }
 
     public AuthenticationResponseDTO login(LoginRequest request) {
@@ -47,8 +48,9 @@ public class AuthenticationService {
             throw new UserNotFoundException(request.getEmail());
         }
         User user = optionalUser.get();
-        String token = jwtService.generateToken(user);
-        return new AuthenticationResponseDTO(token, UserDTO.fromUser(user));
+        String jwt = jwtService.generateToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
+        return new AuthenticationResponseDTO(jwt, UserDTO.fromUser(user), refreshToken);
     }
 
     private boolean isEmailExist(String email) {

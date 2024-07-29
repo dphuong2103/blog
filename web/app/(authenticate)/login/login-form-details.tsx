@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { LoginForm, loginFormSchema } from "@/models/loginForm";
+import { AxiosError } from "axios";
 
 function LoginFormDetails() {
   const router = useRouter();
@@ -24,22 +25,21 @@ function LoginFormDetails() {
   });
 
   const onValidSubmit = useCallback(async (data: LoginForm) => {
-    return login(data);
-  }, []);
-
-  const onRegisterError = useCallback((error: any) => {
-    toast.error(error.response.data);
-    console.error("Error", error);
-  }, []);
-
-  const onRegisterSuccess = useCallback(() => {
-    router.push("/blog");
+    try {
+      await login(data);
+      router.push("/blog");
+    } catch (error: any) {
+      console.error("Error logging in", error);
+      if (error.response.status === 403) {
+        toast.error("Invalid email or password");
+      } else {
+        toast.error("Something is wrong, please try again later!");
+      }
+    }
   }, [router]);
 
   const { data, sendRequest, isLoading, error } = useMutateData({
     requestHandler: onValidSubmit,
-    onError: onRegisterError,
-    onSuccess: onRegisterSuccess,
   });
 
   return (

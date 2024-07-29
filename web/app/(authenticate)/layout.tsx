@@ -36,17 +36,17 @@ function LoginLayout({
         )}
       >
         <NextTopLoader />
+        <ThemeProviders>
+          <div className="relative flex min-h-dvh flex-col bg-background">
+            <main className="flex-1">{children}</main>
+          </div>
+        </ThemeProviders>
         <ToastContainer
           position="bottom-right"
           pauseOnFocusLoss={false}
           className={"text-sm"}
           pauseOnHover={false}
         />
-        <ThemeProviders>
-          <div className="relative flex min-h-dvh flex-col bg-background">
-            <main className="flex-1">{children}</main>
-          </div>
-        </ThemeProviders>
       </body>
     </html>
   );

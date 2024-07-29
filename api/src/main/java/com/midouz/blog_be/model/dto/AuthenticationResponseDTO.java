@@ -10,6 +10,6 @@ import lombok.Data;
 public class AuthenticationResponseDTO {
     private String jwt;
     private UserDTO user;
-
+    private String refreshToken;
 }
 

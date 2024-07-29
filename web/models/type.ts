@@ -74,4 +74,5 @@ export type TagWithBlogCount = {
 export type AuthenticationResponse = {
   user: User;
   jwt: string;
+  refreshToken: string;
 };

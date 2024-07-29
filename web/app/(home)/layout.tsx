@@ -42,11 +42,11 @@ export default function RootLayout({
         <ThemeProviders>
           <div className="relative flex min-h-dvh flex-col bg-background">
             <SiteHeader />
-            <ToastContainer position="bottom-right" pauseOnFocusLoss={false} />
             <main className="flex-1">{children}</main>
             <SiteFooter />
           </div>
         </ThemeProviders>
+        <ToastContainer position="bottom-right" pauseOnFocusLoss={false} />
       </body>
     </html>
   );

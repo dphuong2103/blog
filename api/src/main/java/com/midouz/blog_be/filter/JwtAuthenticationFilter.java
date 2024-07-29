@@ -2,11 +2,11 @@ package com.midouz.blog_be.filter;
 
 import com.midouz.blog_be.repository.UserRepository;
 import com.midouz.blog_be.service.JwtService;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import java.io.IOException;
 
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
-        if (request.getServletPath().contains("/api/v1/auth")) {
+        if (request.getServletPath().contains("/api/v1/authenticate")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -43,13 +43,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         jwt = authHeader.substring(7);
+        if(!jwtService.isTokenValid(jwt)){
+            filterChain.doFilter(request, response);
+            return;
+        }
+//        try{
+//
+//        }catch(ExpiredJwtException e){
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
+
         userId = jwtService.extractUserId(jwt);
         if(userId != null){
             request.setAttribute("userId", userId);
         }
         if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userRepository.findById(userId).orElse(null);
-            if (jwtService.isTokenValid(jwt) && userDetails!=null) {
+            if (userDetails != null) {
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

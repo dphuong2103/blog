@@ -1,9 +1,11 @@
 package com.midouz.blog_be.config;
 
 import com.midouz.blog_be.model.exception.*;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.HttpClientErrorException;
 
 
 @ControllerAdvice
@@ -31,5 +33,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(WrongPasswordException.class)
     public ResponseEntity<String> handleWrongPasswordException(WrongPasswordException e) {
         return ResponseEntity.badRequest().body(e.getMessage());
+    }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<String> handleExpiredJwtException(ExpiredJwtException e) {
+        return ResponseEntity.status(401).body(e.getMessage());
     }
 }

@@ -2,6 +2,7 @@ package com.midouz.blog_be.service;
 
 import com.midouz.blog_be.entity.User;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -24,6 +25,8 @@ public class JwtService {
     private String secretKey;
     @Value("${application.security.jwt.expiration}")
     private long jwtExpiration;
+    @Value("${application.security.jwt.refresh-token.expiration}")
+    private long refreshExpiration;
     public String extractUserId(String token) {
         return extractClaim(token, (claims)->claims.get("userId", String.class));
     }
@@ -70,7 +73,15 @@ public class JwtService {
             Map<String, Object> extraClaims,
             UserDetails userDetails
     ) {
-        return buildToken(extraClaims, userDetails, jwtExpiration);
+        return buildToken(extraClaims, userDetails, 60*1000);
+    }
+
+    public String generateRefreshToken(
+            User user
+    ) {
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("userId", user.getId());
+        return buildToken(extraClaims, user, refreshExpiration);
     }
 
     private String buildToken(

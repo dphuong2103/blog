@@ -27,22 +27,18 @@ function RegisterFormDetails() {
   });
 
   const onValidSubmit = useCallback(async (data: RegisterForm) => {
-    return register(data);
-  }, []);
-
-  const onRegisterError = useCallback((error: any) => {
-    toast.error(error.response.data);
-    console.error("Error", error);
-  }, []);
-
-  const onRegisterSuccess = useCallback(() => {
-    router.push("/blog");
+    try {
+      await register(data);
+      router.push("/blog");
+    } catch (error: any) {
+      toast.error(error.response.data);
+    }
   }, [router]);
+
+
 
   const { data, sendRequest, isLoading, error } = useMutateData({
     requestHandler: onValidSubmit,
-    onError: onRegisterError,
-    onSuccess: onRegisterSuccess,
   });
 
   return (

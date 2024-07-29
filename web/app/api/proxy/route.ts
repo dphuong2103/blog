@@ -19,7 +19,6 @@ export async function DELETE(req: NextRequest) {
 }
 
 async function handleRequest(req: NextRequest) {
-  console.log("Req: ", req);
   const url = new URL(req.url);
   const path = url.searchParams.get("path");
   if (!path) {
@@ -46,7 +45,7 @@ async function handleRequest(req: NextRequest) {
 
   try {
     const response = await fetch(finalUrl, fetchOptions);
-
+    console.log("response: ", await response.json());
     // Handle different content types
     const contentType = response.headers.get("content-type");
     let data;
@@ -58,9 +57,9 @@ async function handleRequest(req: NextRequest) {
 
     return NextResponse.json(data, { status: response.status });
   } catch (error) {
-    console.error("Fetch error: ", error);
+    console.log("Fetch error: ", error);
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal server error: " },
       { status: 500 },
     );
   }

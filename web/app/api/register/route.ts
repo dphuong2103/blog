@@ -37,5 +37,10 @@ export async function POST(req: Request) {
     value: jwtValue,
     httpOnly: true,
   });
+  response.cookies.set({
+    name: "refreshToken",
+    value: authenticationResponse.refreshToken,
+    httpOnly: true,
+  });
   return response;
 }
