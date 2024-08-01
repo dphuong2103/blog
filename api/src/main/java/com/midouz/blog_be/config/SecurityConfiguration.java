@@ -23,20 +23,21 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 public class SecurityConfiguration {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req ->
                         req
-                                .requestMatchers(HttpMethod.POST, "/api/v1/blog/**").authenticated()
+                                .requestMatchers(HttpMethod.POST, "/api/v1/blogs/**").authenticated()
                                 .requestMatchers(HttpMethod.POST, "/api/v1/tags/**").authenticated()
                                 .anyRequest()
                                 .permitAll()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling((exception)->exception.authenticationEntryPoint((request, response, e) -> response.sendError(401, e.getMessage())))
+                .exceptionHandling((exception) -> exception.authenticationEntryPoint((request, response, e) -> response.sendError(401, e.getMessage())))
         ;
 
         return http.build();

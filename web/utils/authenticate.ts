@@ -21,7 +21,6 @@ export async function getUserFromJwt(authorizationString: string) {
       Authorization: authorizationString,
     },
   });
-  console.log("Resposne: ", response);
   if (!response.ok) {
     return null;
   }

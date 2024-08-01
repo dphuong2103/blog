@@ -5,7 +5,7 @@ import {
   PaginationRequest,
   PaginationResult,
 } from "@/models/type";
-import axios, { AxiosHeaders, AxiosRequestConfig } from "axios";
+import { axiosInstanceWithCredential, config } from "./config";
 
 export type CreateBlogRequest = {
   title: string;
@@ -14,15 +14,10 @@ export type CreateBlogRequest = {
   isPublished: boolean;
   tags: string[];
 };
-const config: AxiosRequestConfig = {
-  withCredentials: true,
-  headers: {
-    "content-type": "application/json",
-  },
-};
+
 export async function createBlog(request: CreateBlogRequest) {
   const url = "/api/proxy?path=blogs";
-  var axiosResponse = await axios.post<Blog>(
+  var axiosResponse = await axiosInstanceWithCredential.post<Blog>(
     url,
     JSON.stringify(request),
     config,

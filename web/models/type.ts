@@ -76,3 +76,8 @@ export type AuthenticationResponse = {
   jwt: string;
   refreshToken: string;
 };
+
+export type FailedResult = {
+  isSuccess: boolean;
+  message: string;
+};

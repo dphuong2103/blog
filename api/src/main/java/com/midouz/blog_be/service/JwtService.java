@@ -2,18 +2,14 @@ package com.midouz.blog_be.service;
 
 import com.midouz.blog_be.entity.User;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-
 import io.jsonwebtoken.security.Keys;
-
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.time.Instant;
 import java.util.*;
-
 import java.util.function.Function;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -48,6 +44,10 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
 
+    public Instant extractExpirationInstant(String token){
+        return extractExpiration(token).toInstant();
+    }
+
     private Claims extractAllClaims(String token) {
         return Jwts
                 .parserBuilder()
@@ -62,7 +62,6 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-
     public String generateToken(User user) {
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("userId", user.getId());
@@ -73,7 +72,7 @@ public class JwtService {
             Map<String, Object> extraClaims,
             UserDetails userDetails
     ) {
-        return buildToken(extraClaims, userDetails, 60*1000);
+            return buildToken(extraClaims, userDetails, jwtExpiration);
     }
 
     public String generateRefreshToken(

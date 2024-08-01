@@ -15,7 +15,6 @@ export async function SiteHeader() {
   let user: User | null = null;
   const cookieStore = cookies();
   const authorization = cookieStore.get("Authorization");
-  console.log("Authorization: ", authorization);
   if (authorization) {
     user = await getUserFromJwt(authorization.value);
   }

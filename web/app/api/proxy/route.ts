@@ -37,6 +37,7 @@ async function handleRequest(req: NextRequest) {
   if (cookies.Authorization) {
     requestHeaders.set("Authorization", cookies.Authorization);
   }
+
   const fetchOptions: RequestInit = {
     method: req.method,
     headers: requestHeaders,
@@ -45,21 +46,20 @@ async function handleRequest(req: NextRequest) {
 
   try {
     const response = await fetch(finalUrl, fetchOptions);
-    console.log("response: ", await response.json());
-    // Handle different content types
-    const contentType = response.headers.get("content-type");
-    let data;
-    if (contentType && contentType.includes("application/json")) {
-      data = await response.json();
-    } else {
-      data = await response.text();
+    const jsonData = await response.json();
+
+    if (!response.ok) {
+      return NextResponse.json(jsonData, { status: response.status });
     }
 
-    return NextResponse.json(data, { status: response.status });
+    return new NextResponse(JSON.stringify(jsonData), {
+      status: response.status,
+      headers: { "Content-Type": "application/json", ...response.headers },
+    });
   } catch (error) {
-    console.log("Fetch error: ", error);
+    console.error("Fetch error: ", error);
     return NextResponse.json(
-      { error: "Internal server error: " },
+      { error: "Internal server error" },
       { status: 500 },
     );
   }

@@ -1,7 +1,6 @@
 package com.midouz.blog_be.controller;
 
 import com.midouz.blog_be.model.dto.AuthenticationResponseDTO;
-import com.midouz.blog_be.model.dto.UserDTO;
 import com.midouz.blog_be.model.request.CreateUserRequest;
 import com.midouz.blog_be.model.request.LoginRequest;
 import com.midouz.blog_be.service.AuthenticationService;
@@ -26,4 +25,6 @@ public class AuthenticationController {
     public AuthenticationResponseDTO login(@RequestBody LoginRequest request){
         return authenticationService.login(request);
     }
+
+
 }

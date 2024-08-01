@@ -26,16 +26,17 @@ function RegisterFormDetails() {
     },
   });
 
-  const onValidSubmit = useCallback(async (data: RegisterForm) => {
-    try {
-      await register(data);
-      router.push("/blog");
-    } catch (error: any) {
-      toast.error(error.response.data);
-    }
-  }, [router]);
-
-
+  const onValidSubmit = useCallback(
+    async (data: RegisterForm) => {
+      try {
+        await register(data);
+        router.push("/blog");
+      } catch (error: any) {
+        toast.error(error.response.data);
+      }
+    },
+    [router],
+  );
 
   const { data, sendRequest, isLoading, error } = useMutateData({
     requestHandler: onValidSubmit,

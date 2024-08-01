@@ -31,7 +31,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
-        if (request.getServletPath().contains("/api/v1/authenticate")) {
+        if (request.getServletPath().contains("/api/v1/authenticate") || request.getServletPath().contains("/api/v1/user-tokens/refresh-access-token") ) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -43,22 +43,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         jwt = authHeader.substring(7);
-        if(!jwtService.isTokenValid(jwt)){
+        try{
+            if(!jwtService.isTokenValid(jwt)){
+                filterChain.doFilter(request, response);
+                return;
+            }
+            userId = jwtService.extractUserId(jwt);
+        }catch(ExpiredJwtException e){
             filterChain.doFilter(request, response);
             return;
         }
-//        try{
-//
-//        }catch(ExpiredJwtException e){
-//            filterChain.doFilter(request, response);
-//            return;
-//        }
 
-        userId = jwtService.extractUserId(jwt);
-        if(userId != null){
-            request.setAttribute("userId", userId);
+        if(userId == null){
+            filterChain.doFilter(request, response);
+            return;
         }
-        if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        request.setAttribute("userId", userId);
+        if (SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userRepository.findById(userId).orElse(null);
             if (userDetails != null) {
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(

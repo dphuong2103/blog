@@ -10,3 +10,4 @@ export const blog_api_url = `${api_url}/blogs`;
 export const user_api_url = `${api_url}/users`;
 export const tag_api_url = `${api_url}/tags`;
 export const authenticate_api_url = `${api_url}/authenticate`;
+export const user_token_api_url = `${api_url}/user-tokens`;

@@ -34,7 +34,8 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
   const { data, pageInfo } = blogsResponse;
 
   const totalPages = Math.ceil(pageInfo.totalCount / pageInfo.size);
-  const tags = tagsResult.status === "fulfilled" ? tagsResult.value ?? [] : [];
+  const tags =
+    tagsResult.status === "fulfilled" ? (tagsResult.value ?? []) : [];
   const tagIds: string[] = [];
   data.forEach((b) =>
     b.tags.forEach((t) => {
